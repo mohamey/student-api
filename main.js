@@ -61,18 +61,20 @@ app.post('/', (req, res) => {
 })
 
 app.put('/', (req, res) => {
-  // TODO: Update a students information
   // Get the put contents
   const sessionID = req.body.sessionID
   const payload = req.body.payload
   const stringPayload = JSON.stringify(payload)
-  // Send back a stringified version of the PUT payload
+  // TODO: Update a students information
   res.send(stringPayload)
 })
 
 app.delete('/', (req, res) => {
-  res.send("Hello World!")
-  // TODO: Delete a student from the databas
+  // Get the id of the student to be deleted
+  const sessionID = req.body.sessionID
+  const studentID = req.body.id
+  // TODO: Actually delete a record from the database
+  res.send(studentID)
 })
 
 app.listen(3000, () => {
