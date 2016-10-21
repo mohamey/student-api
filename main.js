@@ -22,7 +22,11 @@ const databasePath = 'students.json'
 const collection = 'students'
 
 // Load existing database if available, then load students collection
-const db = new loki(databasePath)
+const db = new loki(databasePath, {
+  autosave: true,
+  autosaveInterval: 1000
+})
+
 db.loadDatabase({}, () => {
   students = db.getCollection(collection)
   if (!students){
@@ -99,7 +103,6 @@ app.post('/', (req, res) => {
   const queryResult = students.findOne({id: parseInt(payload.id)})
   if (!queryResult) {
     students.insert(payload)
-    db.saveDatabase()
     res.status(200).send("Database updated")
   }else {
     res.status(403).send("Duplicate Student")
@@ -110,9 +113,23 @@ app.put('/', (req, res) => {
   // Get the put contents
   const sessionID = req.body.sessionID
   const payload = req.body.payload
-  const stringPayload = JSON.stringify(payload)
-  // TODO: Update a students information
-  res.send(stringPayload)
+
+  // Retrieve the students details from the database
+  let queryResult = students.findOne({id: parseInt(payload.id)})
+
+  if (queryResult) {
+    // Update the values of the object in the database with
+    // those of the PUT request
+    for (let key in payload) {
+      queryResult[key] = payload[key];
+    }
+
+    students.update(queryResult)
+
+    res.status(200).send("Update Successful")
+  }else{
+    res.status(404).send("Record not found")
+  }
 })
 
 app.delete('/', (req, res) => {
