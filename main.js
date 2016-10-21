@@ -136,8 +136,21 @@ app.delete('/', (req, res) => {
   // Get the id of the student to be deleted
   const sessionID = req.body.sessionID
   const studentID = req.body.id
-  // TODO: Actually delete a record from the database
-  res.send(studentID)
+
+  // Find the students document in the collection to be deleted by ID
+  const studentDocument = students.findOne({id: parseInt(studentID)})
+  if (studentDocument){
+    const result = students.remove(studentDocument)
+
+    if (result) {
+      res.status(200).send("Delete successful")
+    } else {
+      res.status(403).send("An error occurred deleting the document")
+    }
+  } else{
+    res.status(404).send("Document not found")
+  }
+
 })
 
 app.listen(3000, () => {
