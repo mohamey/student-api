@@ -54,16 +54,33 @@ app.get('/', (req, res) => {
         case "single":
           // Get the student ID from the url
           const studentId = req.query.id;
-          // TODO: Actually send back student information
+
+          // Query the database for the id
           let studentInfo = students.findOne({id: parseInt(studentId)})
-          delete studentInfo['meta']
-          delete studentInfo['$loki']
-          console.log(studentInfo)
-          payload = studentInfo
+          if (studentInfo) {
+            delete studentInfo['meta']
+            delete studentInfo['$loki']
+            payload = studentInfo
+          }else{
+            payload = {}
+          }
           break;
+
         case "all":
           // TODO: Retrieve all students from the database send it back
-          payload = "Heres all the students back buddy"
+          // Get all the items in the collection
+          let results = students.data
+
+          // If its not empty, remove lokijs metadata
+          if ( results !== [] ){
+            for (let result of results){
+              delete result['meta']
+              delete result['$loki']
+            }
+            payload = results
+          } else {
+            payload = []
+          }
           break;
       }
       break;
@@ -74,15 +91,19 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-  // TODO: Actually have the API sanitize data and post to database
   // Get post contents
   const sessionID = req.body.sessionID
   const payload = req.body.payload
-  students.insert(payload)
-  db.saveDatabase()
-  const stringPayload = JSON.stringify(payload)
-  // Send back a stringified version of the post payload
-  res.send(stringPayload)
+
+  // Check to make sure there's no repeat of student IDs
+  const queryResult = students.findOne({id: parseInt(payload.id)})
+  if (!queryResult) {
+    students.insert(payload)
+    db.saveDatabase()
+    res.status(200).send("Database updated")
+  }else {
+    res.status(403).send("Duplicate Student")
+  }
 })
 
 app.put('/', (req, res) => {
