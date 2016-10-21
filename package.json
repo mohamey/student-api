@@ -1,0 +1,19 @@
+{
+  "name": "student-api",
+  "version": "1.0.0",
+  "description": "Student RESTful API for Mastercard Internship Interview Challenge",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mohamey/student-api.git"
+  },
+  "author": "Yasir Mohamed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohamey/student-api/issues"
+  },
+  "homepage": "https://github.com/mohamey/student-api#readme"
+}
