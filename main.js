@@ -61,8 +61,13 @@ app.post('/', (req, res) => {
 })
 
 app.put('/', (req, res) => {
-  res.send("Hello World!")
   // TODO: Update a students information
+  // Get the put contents
+  const sessionID = req.body.sessionID
+  const payload = req.body.payload
+  const stringPayload = JSON.stringify(payload)
+  // Send back a stringified version of the PUT payload
+  res.send(stringPayload)
 })
 
 app.delete('/', (req, res) => {
