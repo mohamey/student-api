@@ -1,5 +1,12 @@
 var express = require('express')
-var app = express();
+var bodyParser = require('body-parser')
+var app = express()
+
+// Configure middleware for the express application
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 
 const world = {
   responseFormats: ["json"]
@@ -44,8 +51,13 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-  res.send("Hello World")
-  // TODO: Create a new student entry
+  // TODO: Actually have the API sanitize data and post to database
+  // Get post contents
+  const sessionID = req.body.sessionID
+  const payload = req.body.payload
+  const stringPayload = JSON.stringify(payload)
+  // Send back a stringified version of the post payload
+  res.send(stringPayload)
 })
 
 app.put('/', (req, res) => {
