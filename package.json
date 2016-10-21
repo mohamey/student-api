@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/mohamey/student-api/issues"
   },
-  "homepage": "https://github.com/mohamey/student-api#readme"
+  "homepage": "https://github.com/mohamey/student-api#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
