@@ -1,6 +1,9 @@
-var express = require('express')
-var bodyParser = require('body-parser')
-var app = express()
+const express = require('express')
+const bodyParser = require('body-parser')
+const loki = require('lokijs')
+const Promise = require('bluebird')
+const fs = require('fs')
+const app = express()
 
 // Configure middleware for the express application
 app.use(bodyParser.json())
@@ -8,10 +11,26 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
+// Global Constants
 const world = {
   responseFormats: ["json"]
 }
 
+// Initialise lokijs database variables
+var students
+const databasePath = 'students.json'
+const collection = 'students'
+
+// Load existing database if available, then load students collection
+const db = new loki(databasePath)
+db.loadDatabase({}, () => {
+  students = db.getCollection(collection)
+  if (!students){
+    students = db.addCollection(collection)
+  }
+})
+
+// Handle API Get requests
 app.get('/', (req, res) => {
   // Get the request parameters
   const format = req.query.format.toLowerCase()
@@ -36,7 +55,11 @@ app.get('/', (req, res) => {
           // Get the student ID from the url
           const studentId = req.query.id;
           // TODO: Actually send back student information
-          payload = `Hannah Archbold - ${studentId}`
+          let studentInfo = students.findOne({id: parseInt(studentId)})
+          delete studentInfo['meta']
+          delete studentInfo['$loki']
+          console.log(studentInfo)
+          payload = studentInfo
           break;
         case "all":
           // TODO: Retrieve all students from the database send it back
@@ -55,6 +78,8 @@ app.post('/', (req, res) => {
   // Get post contents
   const sessionID = req.body.sessionID
   const payload = req.body.payload
+  students.insert(payload)
+  db.saveDatabase()
   const stringPayload = JSON.stringify(payload)
   // Send back a stringified version of the post payload
   res.send(stringPayload)
