@@ -1,7 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const loki = require('lokijs')
-const Promise = require('bluebird')
 const fs = require('fs')
 const app = express()
 
