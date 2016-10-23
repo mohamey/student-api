@@ -95,13 +95,27 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
   // Get post contents
-  const sessionID = req.body.sessionID
-  const payload = req.body.payload
+  const payload = req.body
+
+  // Ensure the necessary attributes was submitted
+  if(!req.body.id || req.body.forename || req.body.surname || req.body.DOB || req.body.course || req.body.year){
+    res.status(403).send("Incorrectly formatted content")
+  }
+
+  // Copy the desired attributes, leave out any undesired attributes
+  let student = {
+    id: req.body.id,
+    forename: req.body.forename,
+    surname: req.body.surname,
+    DOB: req.body.DOB,
+    course: req.body.course,
+    year: req.body.year
+  }
 
   // Check to make sure there's no repeat of student IDs
-  const queryResult = students.findOne({id: parseInt(payload.id)})
+  const queryResult = students.findOne({id: parseInt(student.id)})
   if (!queryResult) {
-    students.insert(payload)
+    students.insert(student)
     res.status(200).send("Database updated")
   }else {
     res.status(403).send("Duplicate Student")
@@ -109,17 +123,28 @@ app.post('/', (req, res) => {
 })
 
 app.put('/', (req, res) => {
-  // Get the put contents
-  const sessionID = req.body.sessionID
-  const payload = req.body.payload
+  // Ensure the necessary attributes was submitted
+  if(!req.body.id || req.body.forename || req.body.surname || req.body.DOB || req.body.course || req.body.year){
+    res.status(403).send("Incorrectly formatted content")
+  }
+
+  // Copy the desired attributes, leave out any undesired attributes
+  let student = {
+    id: req.body.id,
+    forename: req.body.forename,
+    surname: req.body.surname,
+    DOB: req.body.DOB,
+    course: req.body.course,
+    year: req.body.year
+  }
 
   // Retrieve the students details from the database
-  let queryResult = students.findOne({id: parseInt(payload.id)})
+  let queryResult = students.findOne({id: parseInt(student.id)})
 
   if (queryResult) {
     // Update the values of the object in the database with
     // those of the PUT request
-    for (let key in payload) {
+    for (let key in student) {
       queryResult[key] = payload[key];
     }
 
@@ -133,7 +158,6 @@ app.put('/', (req, res) => {
 
 app.delete('/', (req, res) => {
   // Get the id of the student to be deleted
-  const sessionID = req.body.sessionID
   const studentID = req.body.id
 
   // Find the students document in the collection to be deleted by ID
