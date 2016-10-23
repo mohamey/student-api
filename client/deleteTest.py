@@ -3,8 +3,7 @@ import json
 
 # Create a dummy payload to send
 payload = {
-    'sessionID' : 13318246,
-    'id': 12345678
+    'id': 2
     }
 
 # Convert the payload to json

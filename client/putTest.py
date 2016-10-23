@@ -3,16 +3,13 @@ import json
 
 # Create a dummy payload to send
 payload = {
-    'sessionID' : 13318246,
-    'payload': {
-        'id': 12345678,
-        'forename': 'ShoeHorn',
-        'surname': 'Doe',
-        'DOB': '01/01/1970',
-        'course': 'CASE',
-        'year': 2
-        }
-    }
+    'id': 8,
+    'forename': 'ShoeHorn',
+    'surname': 'Doe',
+    'DOB': '01/01/1970',
+    'course': 'CASE',
+    'year': 2
+}
 
 # Convert the payload to json
 jsonPayload = json.dumps(payload)
