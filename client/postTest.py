@@ -5,7 +5,7 @@ import json
 payload = {
     'sessionID' : 13318246,
     'payload': {
-        'id': 14445678,
+        'id': 14425678,
         'forename': 'John',
         'surname': 'Doe',
         'DOB': '01/01/1970',
@@ -20,5 +20,6 @@ jsonPayload = json.dumps(payload)
 headers = {'Content-Type': 'application/json'}
 
 # Send the request, print the result
-res = requests.post('http://127.0.0.1:3000', headers = headers, data=jsonPayload)
+res = requests.post('http://mohamey.me/api', headers = headers, data=jsonPayload)
 print(res.text)
+print(str(res.elapsed.microseconds / 1000))
