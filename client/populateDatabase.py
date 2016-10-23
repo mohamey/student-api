@@ -34,8 +34,6 @@ while True:
         'year': year_number
     }
 
-    for k,v in student.items():
-        print(k, v)
     # The request headers
     headers = {
         'Content-Type': 'application/json'
@@ -46,7 +44,10 @@ while True:
     res = requests.post("http://mohamey.me/api", headers=headers, data=jsonPayload)
     print(res.text)
     print(str(res.elapsed.microseconds / 1000))
-    c.timing('stats.timer.api.post', res.elapsed.microseconds / 1000)
+
+    # Push timing to graphite
+    c.timing('api.post', res.elapsed.microseconds / 1000)
+
     studentNo += 1
 
     # This is purely for data visualisation purposes
