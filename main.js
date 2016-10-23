@@ -163,7 +163,10 @@ app.post('/', (req, res) => {
   // Check to make sure there's no repeat of student IDs
   const queryResult = students.findOne({id: parseInt(student.id)})
   if (!queryResult) {
-    const result = students.insert(student)
+    try{
+      var result = students.insert(student)
+    }catch(err){}
+
     if(result){
       const response = {
         successful: true,
@@ -200,7 +203,7 @@ app.put('/', (req, res) => {
   }
 
   // Retrieve the students details from the database
-  let queryResult = students.findOne({id: parseInt(payload.id)})
+  let queryResult = students.find({id: {'$eq': parseInt(payload.id)}})
 
   if (queryResult) {
     // Update the values of the object in the database with
@@ -209,7 +212,9 @@ app.put('/', (req, res) => {
       queryResult[key] = payload[key];
     }
 
-    const result = students.update(queryResult)
+    try{
+      var result = students.update(queryResult)
+    }catch (err){}
 
     if (result) {
       const response = {
@@ -250,7 +255,9 @@ app.delete('/', (req, res) => {
   // Find the students document in the collection to be deleted by ID
   const studentDocument = students.findOne({id: parseInt(studentID)})
   if (studentDocument){
-    const result = students.remove(studentDocument)
+    try{
+      var result = students.remove(studentDocument)
+    }catch(err){}
 
     if (result) {
       const response = {
