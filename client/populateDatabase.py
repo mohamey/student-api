@@ -13,11 +13,11 @@ c = statsd.StatsClient('mohamey.me', 8125)
 courses = ["Computer Science", "Media and Literature", "Historic Studies", "Dentistry", "Medicine", "Pharmacy"]
 # Create random people and send them to the api
 # for studentNo in range(0,100):
-studentNo = 0
+studentNo = 1
 while True:
     # Get a random course and year of study
     course_index = int(random() * len(courses))
-    year_number = int(random() * 5)
+    year_number = int(random() * 5) + 1
 
     # Get a random date of birth after unix epoch, before 01/01/2000
     millisecond_of_birth = int(random() * 946684800000)
@@ -34,6 +34,8 @@ while True:
         'year': year_number
     }
 
+    for k,v in student.items():
+        print(k, v)
     # The request headers
     headers = {
         'Content-Type': 'application/json'

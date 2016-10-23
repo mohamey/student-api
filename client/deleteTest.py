@@ -12,5 +12,5 @@ jsonPayload = json.dumps(payload)
 headers = {'Content-Type': 'application/json'}
 
 # Send the request, print the result
-res = requests.delete('http://127.0.0.1:3000', headers = headers, data=jsonPayload)
+res = requests.delete('http://mohamey.me/api', headers = headers, data=jsonPayload)
 print(res.text)

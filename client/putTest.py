@@ -17,5 +17,5 @@ jsonPayload = json.dumps(payload)
 headers = {'Content-Type': 'application/json'}
 
 # Send the request, print the result
-res = requests.put('http://127.0.0.1:3000', headers = headers, data=jsonPayload)
+res = requests.put('http://mohamey.me/api', headers = headers, data=jsonPayload)
 print(res.text)

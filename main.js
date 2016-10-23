@@ -55,9 +55,6 @@ app.get('/', (req, res) => {
     return
   }
 
-  // Result that will be sent
-  let response
-
   // Switch statement to handle different API versions
   switch (version) {
     case 1.0 :
@@ -144,7 +141,7 @@ app.post('/', (req, res) => {
   const payload = req.body
 
   // Ensure the necessary attributes was submitted
-  if(!req.body.id || !req.body.forename || !req.body.surname || !req.body.DOB || !req.body.course || !req.body.year){
+  if(req.body && (!req.body.id || !req.body.forename || !req.body.surname || !req.body.DOB || !req.body.course || !req.body.year)){
     const response = {
       successful: false,
       message: "Missing values"
@@ -192,7 +189,7 @@ app.post('/', (req, res) => {
 app.put('/', (req, res) => {
   const payload = req.body
   // Only the id attribute is necessary for this request
-  if(!payload.id){
+  if(!req.body || !payload.id){
     const response = {
       successful: false,
       message: "Malformed request"
@@ -241,7 +238,7 @@ app.delete('/', (req, res) => {
   const studentID = req.body.id
 
   // If studentID is undefined, send back an error
-  if (!studentID) {
+  if (!req.body || !studentID) {
     const response = {
       successful: false,
       message: "Malformed request"
