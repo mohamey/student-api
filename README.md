@@ -1,7 +1,7 @@
 # Introduction
 I’ve successfully implemented the API using Nodejs with express, it is currently live at http://mohamey.me/api. The specific requests that can be made will be listed in the next section. There is also an in-memory database running behind the api, ‘lokijs’. This database stores student objects which look like:
 ```javascript
-student = {
+{
 	id: 10,
 	forename: 'John',
 	surname: 'Doe',
@@ -18,6 +18,24 @@ All Requests to the API should be sent to http://mohamey.me/api
 API Requests
 The code used to create the API can be found in the code submission, with it all being in main.js.
 
+# API Response Object
+```javascript
+{
+  successful: true,
+    data: {
+      id: 2,
+      forename: "John",
+      surname: "Doe",
+      DOB: "01/01/1970",
+      course: "CASE",
+      year: 2
+    },
+    message: "Students details received"
+}
+```
+
+API Responses always contain the keys `successful` and `message`
+
 # Quickstart:
 ## Get Requests
 All Get requests have two mandatory url parameters: `version` and `get`. `version` is in order to future proof the API, and currently the only version supported is 1.0. `get` is to specify whether you want to get a list of all students or just one, identified by their ID. As such there are only two options for Get, `single` or `all`. If requesting a single student’s details, you must then provide the student’s ID.
@@ -25,8 +43,26 @@ All Get requests have two mandatory url parameters: `version` and `get`. `versio
 ### Example Get Single
 http://mohamey.me/api?version=1.0&get=single&format=json&id=2
 
+This returns an object of the form:
+```javascript
+{
+  successful: true,
+    data: {
+      id: 2,
+      forename: "John",
+      surname: "Doe",
+      DOB: "01/01/1970",
+      course: "CASE",
+      year: 2
+    },
+    message: "Students details received"
+}
+```
+
 ### Example Get All
 http://mohamey.me/api?version=1.0&get=all
+
+This request returns an array of the above student object
 
 Notice the parameter `format` is not necessary and will default to JSON. It is also case insensitive. At the moment, json is the only response format supported.
 
@@ -40,9 +76,11 @@ Currently the server responds to PUT requests properly, however an error occurs 
 
 ## Delete Requests
 In order to delete a student from the database, a JSON object of the form:
+```javascript
 {
 	‘id’: ‘23’
 }
+```
 Should be sent to http://mohamey.me/api, where id references the ID number of the student to be deleted.
 
 As with the PUT requests, while the API handles delete requests properly, deleting the student from the database throws an error. As a result, the appropriate error message is returned.
